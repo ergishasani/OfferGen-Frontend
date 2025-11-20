@@ -1,26 +1,30 @@
 // src/lib/apiClient.ts
-import axios from "axios";
-import type { AxiosRequestHeaders } from "axios";
+import axios, { AxiosHeaders, type InternalAxiosRequestConfig } from "axios";
 import { getStoredToken } from "./auth";
 
-const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ?? "http://localhost:3000",
+const baseURL =
+  import.meta.env.VITE_API_BASE_URL && import.meta.env.VITE_API_BASE_URL !== ""
+    ? import.meta.env.VITE_API_BASE_URL
+    : "http://localhost:3000/api";
+
+export const apiClient = axios.create({
+  baseURL,
   withCredentials: false,
+  timeout: 15000,
 });
 
-apiClient.interceptors.request.use((config) => {
+apiClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
   const token = getStoredToken();
 
   if (token) {
-    // Make sure headers exists and treat it as AxiosRequestHeaders
-    const headers = (config.headers ?? {}) as AxiosRequestHeaders;
-
-    headers.Authorization = `Bearer ${token}`;
-
-    config.headers = headers;
+    if (config.headers instanceof AxiosHeaders) {
+      config.headers.set("Authorization", `Bearer ${token}`);
+    } else {
+      const headers = new AxiosHeaders(config.headers);
+      headers.set("Authorization", `Bearer ${token}`);
+      config.headers = headers;
+    }
   }
 
   return config;
 });
-
-export { apiClient };

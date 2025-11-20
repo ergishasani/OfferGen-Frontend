@@ -1,0 +1,26 @@
+.loader-spinner {
+  display: flex;
+  gap: 6px;
+}
+
+.loader-spinner div {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2563eb;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.loader-spinner div:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.loader-spinner div:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  to {
+    opacity: 0.3;
+    transform: translateY(-6px);
+  }
+}

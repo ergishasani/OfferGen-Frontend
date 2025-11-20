@@ -1,5 +1,8 @@
 // src/styles/globals.scss
 
+@import "./components/badge";
+@import "./pages/invoices.scss";
+
 /* ========== RESET ========== */
 *,
 *::before,
@@ -371,4 +374,250 @@ a:hover {
   font-size: 0.9rem;
   color: #4b5563;
   margin: 0 0 0.5rem;
+}
+
+/* ========== DASHBOARD PAGE ========== */
+
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dashboard-page__center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.dashboard-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dashboard-page__title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dashboard-page__subtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.dashboard-page__summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.dashboard-page__charts-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 2fr);
+  gap: 1rem;
+}
+
+.dashboard-page__bottom-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 1rem;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-page__charts-grid,
+  .dashboard-page__bottom-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Dashboard cards */
+
+.dashboard-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04),
+    0 0 0 1px rgba(15, 23, 42, 0.02);
+}
+
+.dashboard-card--primary {
+  border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.dashboard-card--panel {
+  padding: 1rem 1.25rem 1.25rem;
+}
+
+.dashboard-card__label {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+}
+
+.dashboard-card__value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dashboard-card__hint {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.dashboard-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.dashboard-card__header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.dashboard-card__header--with-link {
+  margin-bottom: 0.75rem;
+}
+
+/* Table */
+
+.dashboard-table {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+}
+
+.dashboard-table__header,
+.dashboard-table__row {
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr 1.2fr 1.1fr 1.3fr;
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+  align-items: center;
+}
+
+.dashboard-table__header {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #9ca3af;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.dashboard-table__body {
+  margin-top: 0.25rem;
+}
+
+.dashboard-table__row {
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.dashboard-table__row:last-child {
+  border-bottom: none;
+}
+
+/* Status pills */
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-pill--paid {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-pill--approved,
+.status-pill--sent {
+  background: #fef9c3;
+  color: #92400e;
+}
+
+.status-pill--draft {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.status-pill--void {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* Quick actions */
+
+.dashboard-page__quick-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.quick-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04),
+    0 0 0 1px rgba(15, 23, 42, 0.02);
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+
+.quick-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.07),
+    0 0 0 1px rgba(15, 23, 42, 0.02);
+}
+
+.quick-card__title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.quick-card__subtitle {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 0.15rem;
+}
+
+/* Small link-style button */
+
+.dashboard-link-button {
+  border: none;
+  background: transparent;
+  color: #2563eb;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0;
+}
+
+.dashboard-link-button:hover {
+  text-decoration: underline;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
 }

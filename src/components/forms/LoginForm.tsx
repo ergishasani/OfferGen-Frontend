@@ -11,6 +11,21 @@ interface LocationState {
   from?: string;
 }
 
+interface ErrorWithResponse {
+  response?: {
+    status?: number;
+  };
+}
+
+function hasResponseStatus(error: unknown): error is ErrorWithResponse {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "response" in error &&
+    typeof (error as { response?: unknown }).response === "object"
+  );
+}
+
 export function LoginForm() {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -28,17 +43,34 @@ export function LoginForm() {
     setLoading(true);
 
     try {
-      // Currently rememberMe is visual only – login still works fully
       await login(email, password);
 
       const state = location.state as LocationState | null;
       const redirectTo = state?.from ?? routes.dashboardRoot;
       navigate(redirectTo, { replace: true });
     } catch (err: unknown) {
-      let message = "Invalid email or password";
-      if (err instanceof Error && err.message) {
+      console.error(err);
+
+      let message = "Email or password is incorrect";
+      let status: number | undefined;
+
+      if (hasResponseStatus(err) && typeof err.response?.status === "number") {
+        status = err.response.status;
+      }
+
+      if (status && status >= 500) {
+        message = "Server error. Please try again later.";
+      } else if (status === 429) {
+        message = "Too many attempts. Please wait and try again.";
+      } else if (
+        err instanceof Error &&
+        err.message &&
+        !err.message.toLowerCase().startsWith("request failed with status code")
+      ) {
+        // Only use the backend message if it's not the ugly generic axios text
         message = err.message;
       }
+
       setError(message);
     } finally {
       setLoading(false);
